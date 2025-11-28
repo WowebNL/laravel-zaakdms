@@ -1,0 +1,11 @@
+<stuf:zender>
+    @if(!empty($application))
+    <stuf:applicatie>{{$application}}</stuf:applicatie>
+    @endif
+    @if(!empty($administrative))
+    <stuf:administratie>{{$administrative}}</stuf:administratie>
+    @endif
+    @if(!empty($user))
+    <stuf:gebruiker>{{$user}}</stuf:gebruiker>
+    @endif
+</stuf:zender>

@@ -1,0 +1,26 @@
+{
+    "name": "woweb/laravel-zaakdms",
+    "description": "A laravel wrapper for the Zaak- en Documentservices 1.1 (Soap)",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Woweb B.V.",
+            "email": "info@woweb.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Woweb\\Zaakdms\\": "src/"
+        }
+    },
+    "require": {
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Woweb\\Zaakdms\\ZaakdmsServiceProvider"
+            ]
+        }
+    }
+}
