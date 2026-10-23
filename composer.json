@@ -14,7 +14,19 @@
             "Woweb\\Zaakdms\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Woweb\\Zaakdms\\Tests\\": "tests/"
+        }
+    },
     "require": {
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "scripts": {
+        "test": "phpunit"
     },
     "extra": {
         "laravel": {
