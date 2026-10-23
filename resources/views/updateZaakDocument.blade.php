@@ -14,7 +14,7 @@
         @if(isset($identificatie))
         <stuf:referentienummer>{{$identificatie}}</stuf:referentienummer>
         @endif
-        <stuf:tijdstipBericht>{{\Carbon\Carbon::now()->format('Ymdhis')}}</stuf:tijdstipBericht>
+        <stuf:tijdstipBericht>{{\Carbon\Carbon::now()->format('YmdHis')}}</stuf:tijdstipBericht>
         <stuf:functie>updateZaakdocument</stuf:functie>
     </zkn:stuurgegevens>
     <zkn:parameters>
