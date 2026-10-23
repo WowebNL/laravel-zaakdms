@@ -82,6 +82,10 @@ abstract class AbstractApi
     protected function diskAndFileRules(array $options, string $fileRequirement): array
     {
         $disk            = $options['disk'] ?? null;
+        // An empty disk means the default disk, as Storage::disk('') does.
+        if (is_string($disk) && trim($disk) === '') {
+            $disk = null;
+        }
         $configuredDisks = array_keys(config('filesystems.disks', []));
         $fileRules       = [$fileRequirement];
 

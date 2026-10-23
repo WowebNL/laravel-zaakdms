@@ -97,6 +97,19 @@ class VoegZaakdocumentToeTest extends TestCase
         }
     }
 
+    public function test_an_empty_disk_checks_the_file_on_the_default_disk(): void
+    {
+        Http::fake();
+
+        $this->expectException(InvalidZaakdmsArgumentsException::class);
+
+        try {
+            (new voegZaakdocumentToe())->handle($this->documentOptions(['disk' => '']));
+        } finally {
+            Http::assertNothingSent();
+        }
+    }
+
     public function test_the_file_is_still_required(): void
     {
         Http::fake();
