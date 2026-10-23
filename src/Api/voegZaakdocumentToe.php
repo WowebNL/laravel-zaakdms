@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Woweb\Zaakdms\Response\ZaakdmsResponse;
-use Woweb\Zaakdms\Rule\FileExists;
 use Woweb\Zaakdms\Rule\FileSize;
 use Illuminate\Support\Str;
 use Log;
@@ -83,7 +82,6 @@ class voegZaakdocumentToe extends AbstractApi
      */
     private function validateOptions(array $options)
     {
-        $disk      = $options['disk'] ?? null;
         $validator = Validator::make($options, [
             'identificatie'             => 'required|string',
             'documenttype'              => 'required|string|max:255',
@@ -94,11 +92,9 @@ class voegZaakdocumentToe extends AbstractApi
             'titel'                     => 'required|string|max:255',
             'beschrijving'              => 'nullable|string',
             'auteur'                    => 'required|string|max:255',
-            'disk'                      => 'nullable|in:local,s3-nijmegen,s3-nijmegen-openforms',
             'vertrouwelijkAanduiding'   => 'required|in:' . implode(',', array_keys($this->confidentialLevels)),
-            'file'                      => ['required', new FileExists($disk)],
             'zaak.identificatie'        => 'required|string'
-        ]);
+        ] + $this->diskAndFileRules($options, 'required'));
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -111,7 +107,8 @@ class voegZaakdocumentToe extends AbstractApi
         if (Storage::disk($disk)->exists($filepath)) {
             $file      = Storage::disk($disk)->get($filepath);
 
-            // TODO quick and dirty fix for missing extension in s3-nijmegen, nijmegen needs to fix this
+            // Workaround: some storage setups keep PDF files under a /pdf/ path without a file
+            // extension. Append it so the DMS receives a file name with the right extension.
             if (str_contains($filepath, '/pdf/') && !str_ends_with(strtolower($filepath), '.pdf')) {
                 $filepath = $filepath . '.pdf';
             }

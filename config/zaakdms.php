@@ -13,11 +13,14 @@ return [
     'webview_url'       => env('ZAAKDMS_WEBVIEW_URL'),
     'ping_failure_notification' => env('ZAAKDMS_PING_FAILURE_NOTIFICATION', false),
 
+    // TLS settings for the connection. There are no default paths: set these in the
+    // environment. 'cert' and 'cert_key' are the client certificate and its private key,
+    // 'verify' is the CA bundle used to verify the server (or true/false).
     // see https://stackoverflow.com/questions/7147988/creating-a-php-soap-request-with-a-certificate
-    'cert'              => env('ESB__SEND_CERT', storage_path('cert/woweb-pem.crt')),
-    'cert_key'          => env('ESB_SEND_PK', storage_path('cert/certificate.key')),
+    'cert'              => env('ESB__SEND_CERT'),
+    'cert_key'          => env('ESB_SEND_PK'),
 
-    'verify'            => env('ESB_VERIFY', storage_path('cert/nijmegen-test-root.pem')),
+    'verify'            => env('ESB_VERIFY'),
     'log_file_requests' => env('ZAAKDMS_LOG_FILE_REQUESTS', false),
 
     // sender information
