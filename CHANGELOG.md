@@ -10,7 +10,7 @@ All notable changes to this package are documented in this file.
 
 ### Changed (possibly breaking)
 
-- `cert`, `cert_key` and `verify` no longer have default paths under `storage/cert`. They are read from `ESB__SEND_CERT`, `ESB_SEND_PK` and `ESB_VERIFY` only (the environment variable names are unchanged). If you relied on the old default paths, set these variables to the paths of your files. When a variable is not set, the option is passed to the HTTP client as empty: no client certificate is sent and the server certificate is verified against the default CA bundle.
+- `cert`, `cert_key` and `verify` no longer have default paths under `storage/cert`. They are read from `ESB__SEND_CERT`, `ESB_SEND_PK` and `ESB_VERIFY` only (the environment variable names are unchanged). If you relied on the old default paths, set these variables to the paths of your files. When a variable is not set, the option is passed to the HTTP client as empty: no client certificate is sent and the server certificate is verified against the default CA bundle. Note what this means for `verify`: the old default path pointed to one specific root CA, so only server certificates issued under that CA were accepted. Without `ESB_VERIFY` that restriction is gone and any CA in the system's default bundle is accepted. To keep verifying against one CA only, set `ESB_VERIFY` to the path of that CA file. Setting `ESB_VERIFY=false` disables server verification altogether.
 - `voegZaakdocumentToe` validates the `disk` option against the disks configured in `filesystems.disks`, like `updateZaakDocument`, instead of a fixed list of disk names. Any configured disk can now be used; a disk that is not configured is rejected with an `InvalidZaakdmsArgumentsException`.
 
 ### Fixed

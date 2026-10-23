@@ -12,9 +12,9 @@ The package has no default certificate paths. Set them in the environment:
 | --- | --- | --- |
 | `ESB__SEND_CERT` | `zaakdms.cert` | Path to the client certificate |
 | `ESB_SEND_PK` | `zaakdms.cert_key` | Path to the private key of the client certificate |
-| `ESB_VERIFY` | `zaakdms.verify` | Path to the CA bundle used to verify the server, or `true`/`false` |
+| `ESB_VERIFY` | `zaakdms.verify` | Path to the CA bundle used to verify the server, or `true`/`false`. `false` disables server verification and is only meant for local development. |
 
-When a variable is not set, no client certificate is sent and the server certificate is verified against the default CA bundle.
+When a variable is not set, no client certificate is sent and the server certificate is verified against the system's default CA bundle, so any CA in that bundle is accepted. To accept only certificates issued under one specific CA, set `ESB_VERIFY` to the path of that CA file. Leave a variable out entirely when you do not use it; an empty value is not the same as not set.
 
 ### Timezone
 
