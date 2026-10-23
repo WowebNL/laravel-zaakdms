@@ -15,6 +15,8 @@ abstract class TestCase extends Orchestra
 
     protected function defineEnvironment($app): void
     {
+        // Applications often run on UTC; the package converts its own timestamps.
+        $app['config']->set('app.timezone', 'UTC');
         $app['config']->set('zaakdms.url', 'https://zaakdms.test/');
         $app['config']->set('zaakdms.verify', false);
         $app['config']->set('zaakdms.cert', null);

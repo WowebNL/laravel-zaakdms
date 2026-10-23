@@ -38,6 +38,11 @@ return [
     ],
 
     'date_format'        => env('ZAAKDMS_DATE_FORMAT', 'Ymd'), 
+
+    // Timezone of the timestamps the package generates itself (tijdstipBericht,
+    // datumStatusGezet). The DMS expects local time, while applications often run on UTC.
+    // Leave empty to use the application timezone (app.timezone).
+    'timezone'           => env('ZAAKDMS_TIMEZONE', 'Europe/Amsterdam'),
     'cache'              => [
         'default'        => false,
         'time'           => env('ZAAKDMS_CACHE_TIME')
