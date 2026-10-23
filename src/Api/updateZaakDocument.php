@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Woweb\Zaakdms\Response\ZaakdmsResponse;
-use Woweb\Zaakdms\Rule\FileExists;
 use Woweb\Zaakdms\Rule\FileSize;
 use Illuminate\Support\Str;
 use Woweb\Zaakdms\Exceptions\InvalidZaakdmsArgumentsException;
@@ -76,13 +74,6 @@ class updateZaakDocument extends AbstractApi
      */
     private function validateOptions(array $options)
     {
-        $disk            = $options['disk'] ?? null;
-        $configuredDisks = array_keys(config('filesystems.disks', []));
-        // Only look for the file on a disk that exists; an unknown disk is reported by the 'disk' rule.
-        $fileRules       = $disk === null || in_array($disk, $configuredDisks, true)
-            ? ['nullable', new FileExists($disk)]
-            : ['nullable'];
-
         $validator = Validator::make($options, [
             'identificatie'             => 'required|string',
             'documenttype'              => 'required|string|max:255',
@@ -93,11 +84,9 @@ class updateZaakDocument extends AbstractApi
             'titel'                     => 'required|string|max:255',
             'beschrijving'              => 'nullable|string',
             'auteur'                    => 'nullable|string|max:255',
-            'disk'                      => ['nullable', 'string', Rule::in($configuredDisks)],
             'vertrouwelijkAanduiding'   => 'required|in:' . implode(',', array_keys($this->confidentialLevels)),
-            'file'                      => $fileRules,
             'zaak.identificatie'        => 'required|string'
-        ]);
+        ] + $this->diskAndFileRules($options, 'nullable'));
 
         if ($validator->fails()) {
             $errors = $validator->errors();

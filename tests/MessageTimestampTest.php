@@ -11,8 +11,9 @@ class MessageTimestampTest extends TestCase
     {
         parent::setUp();
 
-        // An afternoon time: a 12-hour format would render 03 instead of 15.
-        Carbon::setTestNow(Carbon::create(2026, 3, 14, 15, 30, 0));
+        // 14:30 UTC is 15:30 in the default timezone (Europe/Amsterdam, winter time),
+        // an afternoon time: a 12-hour format would render 03 instead of 15.
+        Carbon::setTestNow(Carbon::create(2026, 3, 14, 14, 30, 0, 'UTC'));
     }
 
     protected function tearDown(): void

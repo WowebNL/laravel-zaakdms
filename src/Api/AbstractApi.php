@@ -3,6 +3,8 @@
 namespace Woweb\Zaakdms\Api;
 
 use Exception;
+use Illuminate\Validation\Rule;
+use Woweb\Zaakdms\Rule\FileExists;
 
 abstract class AbstractApi
 {
@@ -59,23 +61,41 @@ abstract class AbstractApi
      */
     public function getOptions(): array
     {
-        // $verify = config('zaakdms.verify');
-        // $options = [];
-
-        // if($verify) {
-        //     $options['verify'] = $verify;
-        //     'verify'    => config('nijmegen-esb.verify'),
-        //     'cert'  => config('nijmegen-esb.cert'),
-        //     'ssl_key'   => config('nijmegen-esb.cert_key')
-        // }
-
-        // return $options;
-
         return [
             'verify'    => config('zaakdms.verify'),
             'cert'      => config('zaakdms.cert'),
             'ssl_key'   => config('zaakdms.cert_key'),
             'connect_timeout'   => 5 // 5 seconds
+        ];
+    }
+
+    /**
+     * Validation rules for the optional 'disk' option and the 'file' that is read from it.
+     *
+     * The disk must be one of the disks configured in filesystems.disks. The file is only
+     * looked up on a disk that exists; an unknown disk is reported by the 'disk' rule.
+     *
+     * @param array $options
+     * @param string $fileRequirement 'required' or 'nullable'
+     * @return array
+     */
+    protected function diskAndFileRules(array $options, string $fileRequirement): array
+    {
+        $disk            = $options['disk'] ?? null;
+        // An empty disk means the default disk, as Storage::disk('') does.
+        if (is_string($disk) && trim($disk) === '') {
+            $disk = null;
+        }
+        $configuredDisks = array_keys(config('filesystems.disks', []));
+        $fileRules       = [$fileRequirement];
+
+        if ($disk === null || in_array($disk, $configuredDisks, true)) {
+            $fileRules[] = new FileExists($disk);
+        }
+
+        return [
+            'disk' => ['nullable', 'string', Rule::in($configuredDisks)],
+            'file' => $fileRules,
         ];
     }
 

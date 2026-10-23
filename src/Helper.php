@@ -2,7 +2,9 @@
 
 namespace Woweb\Zaakdms;
 
+use Carbon\CarbonInterface;
 use Exception;
+use Illuminate\Support\Carbon;
 use SimpleXMLElement;
 
 class Helper
@@ -41,6 +43,19 @@ class Helper
         }
 
         throw new Exception('Attriute ' . $attributeKey .' with value ' . $attributeValue .' not found on Zaakdms response');
+    }
+
+    /**
+     * The current time in the timezone configured in zaakdms.timezone, for the timestamps
+     * the package generates itself. Without a configured timezone the application
+     * timezone is used.
+     */
+    public static function now(): CarbonInterface
+    {
+        $now      = Carbon::now();
+        $timezone = config('zaakdms.timezone');
+
+        return $timezone ? $now->setTimezone($timezone) : $now;
     }
 
     public static function getWebviewUrl(string $identificatie) : string 
