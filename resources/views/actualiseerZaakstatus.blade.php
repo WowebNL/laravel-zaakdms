@@ -8,7 +8,7 @@
         <x-zaakdms-zender />
         <x-zaakdms-ontvanger />
         <stuf:referentienummer>{{$identificatie}}</stuf:referentienummer>
-        <stuf:tijdstipBericht>{{\Carbon\Carbon::now()->format('Ymdhis')}}</stuf:tijdstipBericht>
+        <stuf:tijdstipBericht>{{\Carbon\Carbon::now()->format('YmdHis')}}</stuf:tijdstipBericht>
         <stuf:entiteittype>ZAK</stuf:entiteittype>
     </zkn:stuurgegevens>
     <zkn:parameters>
@@ -22,7 +22,7 @@
                 <zkn:volgnummer>{{$volgnummer}}</zkn:volgnummer>
                 <zkn:omschrijving>{{$omschrijving}}</zkn:omschrijving>
             </zkn:gerelateerde>
-            <zkn:datumStatusGezet>{{\Carbon\Carbon::now()->format('Ymdhis')}}</zkn:datumStatusGezet>
+            <zkn:datumStatusGezet>{{\Carbon\Carbon::now()->format('YmdHis')}}</zkn:datumStatusGezet>
             <zkn:isGezetDoor  stuf:verwerkingssoort="I" stuf:entiteittype="ZAKSTTBTR">
                 <zkn:gerelateerde><zkn:medewerker stuf:entiteittype="MDW" stuf:verwerkingssoort="I">
                     <zkn:identificatie>{{$gebruikerIdentificatie}}</zkn:identificatie>

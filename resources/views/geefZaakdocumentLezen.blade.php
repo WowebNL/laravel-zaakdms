@@ -11,7 +11,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         @if(isset($identificatie))
         <stuf:referentienummer>{{$identificatie}}</stuf:referentienummer>
         @endif
-        <stuf:tijdstipBericht>{{\Carbon\Carbon::now()->format('Ymdhis')}}</stuf:tijdstipBericht>
+        <stuf:tijdstipBericht>{{\Carbon\Carbon::now()->format('YmdHis')}}</stuf:tijdstipBericht>
         <stuf:entiteittype>EDC</stuf:entiteittype>
     </zkn:stuurgegevens>
     <zkn:parameters>
